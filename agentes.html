@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentes</title>
+    <link rel="stylesheet" href="mesa.css">
+    <link rel="stylesheet" href="agentes.css">
+    <link rel="icon" type="image/PNG" sizes="16x16" href="icon.jpg">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="index.html">Memorias</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a href="mesa_documentos.html">mesa de documentos</a></li>
+            </ul>
+        </nav>
+    </header>
+  <main>
+    <div class="row">
+        <div class="column">
+          <img src="safira_ficha.jpeg" alt="Safira" width="75%" onclick="myFunction(this);">
+        </div>
+      <!-- The expanding image container -->
+      <div class="container">
+        <!-- Close the image -->
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+      
+        <!-- Expanded image -->
+        <img id="expandedImg" style="width:30%">
+      
+        <!-- Image text -->
+        <div id="imgtext"></div>
+      </div>
+  </main>
+  <script src="agentes.js"></script>
+  <script src="mobile-navbar.js"></script>
+  <footer>
+      <p>este site é apenas uma maneira de diversão entre amigos(e um pedido de socorro do mestre, me ajuda)</p>
+  </footer>
+</body>
+</html>

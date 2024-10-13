@@ -1,0 +1,248 @@
+html
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
+</head>
+<body>
+    <main class="container">
+        <form id="login">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="input-box">
+                <input type="password" id="password" placeholder="Senha" required>
+            </div>
+            <div class="lembrar">
+                <label>
+                    <input type="checkbox">
+                    Lembrar minha senha
+                </label>
+            </div>
+            <button type="button" onclick="login()">Logar</button>
+            <button type="button" onclick="register()">Registrar</button>
+        </form>
+    </main>
+
+    <!-- Incluindo bibliotecas do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
+
+    <!-- Importando o script com as funções de login e registro -->
+    <script src="index.js"></script>
+</body>
+</html>
+
+
+css
+const agentes = document.querySelectorAll('.agente');
+
+agentes.forEach((agente) => {
+  agente.addEventListener('click', () => {
+    agente.classList.add('agente-selecionado');
+
+    // Adicione estilos para centralizar e aumentar a imagem
+    const imagem = agente.querySelector('img'); // Suponha que a imagem esteja dentro da div "agente"
+    imagem.style.transform = 'scale(1.5)'; // Aumenta o tamanho da imagem
+    imagem.style.position = 'absolute'; // Permite que a imagem seja posicionada absolutamente
+    imagem.style.top = '50%'; // Centraliza a imagem verticalmente
+    imagem.style.left = '50%'; // Centraliza a imagem horizontalmente
+    imagem.style.transform = 'translate(-50%, -50%)'; // Ajusta a posição para que a imagem fique centralizada
+
+    // Crie o overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'overlay';
+
+    // Adicione o overlay ao agente
+    agente.appendChild(overlay);
+
+    // Adicione o estilo ao overlay
+    overlay.style.position = 'absolute';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // ajuste a opacidade do fundo
+    overlay.style.display = 'block';
+
+    // Adicione um evento de click ao overlay para fechar quando clicar no fundo
+    overlay.addEventListener('click', function() {
+      overlay.style.display = 'none';
+      agente.classList.remove('agente-selecionado');
+      imagem.style.transform = ''; // Remove o efeito de aumento de tamanho
+      imagem.style.position = ''; // Remove a posição absoluta
+      imagem.style.top = ''; // Remove a centralização vertical
+      imagem.style.left = ''; // Remove a centralização horizontal
+      imagem.style.transform = ''; // Remove a ajuste de posição
+    });
+
+    // Crie o botão Fechar
+    const botaoFechar = document.createElement('button');
+    botaoFechar.textContent = 'Fechar';
+
+    // Adicione o botão Fechar ao agente
+    agente.appendChild(botaoFechar);
+
+    // Adicione um evento de click ao botão Fechar para fechar o overlay
+    botaoFechar.addEventListener('click', function() {
+      overlay.style.display = 'none';
+      agente.classList.remove('agente-selecionado');
+      imagem.style.transform = ''; // Remove o efeito de aumento de tamanho
+      imagem.style.position = ''; // Remove a posição absoluta
+      imagem.style.top = ''; // Remove a centralização vertical
+      imagem.style.left = ''; // Remove a centralização horizontal
+      imagem.style.transform = ''; // Remove a ajuste de posição
+    });
+  });
+});
+
+js
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDSJAEZ1K_4vaWYZo2CpypT90VLeUmaxZs",
+    authDomain: "neupolina-87815.firebaseapp.com",
+    projectId: "neupolina-87815",
+    storageBucket: "neupolina-87815.appspot.com",
+    messagingSenderId: "968851497859",
+    appId: "1:968851497859:web:d2f8b105fc1070f0b70cb6",
+    measurementId: "G-CD3Q2EM1EZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+  // Set up our register function
+  function register () {
+    // Get all our input fields
+    email = document.getElementById('email').value
+    password = document.getElementById('password').value
+
+  
+    // Validate input fields
+    if (validate_email(email) == false || validate_password(password) == false) {
+      alert('Email or Password is Outta Line!!')
+      return
+      // Don't continue running the code
+    }
+    if (validate_field(full_name) == false || validate_field(favourite_song) == false || validate_field(milk_before_cereal) == false) {
+      alert('One or More Extra Fields is Outta Line!!')
+      return
+    }
+   
+    // Move on with Auth
+    auth.createUserWithEmailAndPassword(email, password)
+    .then(function() {
+      // Declare user variable
+      var user = auth.currentUser
+  
+      // Add this user to Firebase Database
+      var database_ref = database.ref()
+  
+      // Create User data
+      var user_data = {
+        email : email,
+        full_name : full_name,
+        last_login : Date.now()
+      }
+  
+      // Push to Firebase Database
+      database_ref.child('users/' + user.uid).set(user_data)
+  
+      // DOne
+      alert('User Created!!')
+    })
+    .catch(function(error) {
+      // Firebase will use this to alert of its errors
+      var error_code = error.code
+      var error_message = error.message
+  
+      alert(error_message)
+    })
+  }
+  
+  // Set up our login function
+  function login () {
+    // Get all our input fields
+    email = document.getElementById('email').value
+    password = document.getElementById('password').value
+  
+    // Validate input fields
+    if (validate_email(email) == false || validate_password(password) == false) {
+      alert('Email or Password is Outta Line!!')
+      return
+      // Don't continue running the code
+    }
+  
+    auth.signInWithEmailAndPassword(email, password)
+    .then(function() {
+      // Declare user variable
+      var user = auth.currentUser
+  
+      // Add this user to Firebase Database
+      var database_ref = database.ref()
+  
+      // Create User data
+      var user_data = {
+        last_login : Date.now()
+      }
+  
+      // Push to Firebase Database
+      database_ref.child('users/' + user.uid).update(user_data)
+  
+      // DOne
+      alert('User Logged In!!')
+  
+    })
+    .catch(function(error) {
+      // Firebase will use this to alert of its errors
+      var error_code = error.code
+      var error_message = error.message
+  
+      alert(error_message)
+    })
+  }
+  
+  
+  
+  
+  // Validate Functions
+  function validate_email(email) {
+    expression = /^[^@]+@\w+(\.\w+)+\w$/
+    if (expression.test(email) == true) {
+      // Email is good
+      return true
+    } else {
+      // Email is not good
+      return false
+    }
+  }
+  
+  function validate_password(password) {
+    // Firebase only accepts lengths greater than 6
+    if (password < 6) {
+      return false
+    } else {
+      return true
+    }
+  }
+  
+  function validate_field(field) {
+    if (field == null) {
+      return false
+    }
+  
+    if (field.length <= 0) {
+      return false
+    } else {
+      return true
+    }
+  }

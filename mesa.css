@@ -1,0 +1,148 @@
+
+.balcao {
+  position: relative;
+  width: 100%; /* ou uma largura fixa, dependendo do seu design */
+  height: 100%; /* ajuste a altura de acordo com sua preferência */
+  background-image: url('balcao.png'); /* adicione o caminho da sua imagem aqui */
+  background-size: 1000px; /* ajusta a imagem para cobrir todo o espaço do balcão */
+  background-position: center;  /* centraliza a imagem horizontalmente */
+  background-repeat: no-repeat;
+  z-index: 0;  /*isso garantirá que o balcão esteja em cima de outros elementos */
+}
+
+
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+a{
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.ficha img{
+  position: absolute;
+  margin-left: 550px;
+  bottom: 40%;
+  z-index: 1;
+  
+}
+
+a:hover{
+  opacity: 0.7;
+}
+
+.logo{
+  font-size: 24px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin:auto;
+}
+
+nav{
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #23232e;
+  height: 8vh;
+}
+
+main{
+  background: #171720;
+  background-size: cover;
+  height: 92vh;
+}
+
+footer{
+  text-align: center;
+  background: #23232e;
+  color: white;
+}
+
+.venha-aprender{
+  color:#dbdbdb;
+  text-decoration: none;
+  text-shadow: 1px 1px 3px #23232e;
+  text-align: center;
+  letter-spacing: 4px;
+  padding-top: 15%;
+  font-size: 100px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.nav-list{
+  list-style: none;
+  display: flex;
+}
+
+.nav-list li{
+  letter-spacing: 3px;
+  margin-left: 42px;
+}
+
+.mobile-menu{
+  display: none;
+  cursor: pointer;
+}
+
+.mobile-menu div{
+  width: 32px;
+  height: 2px;
+  background: #fff;
+  margin: 8px;
+
+}
+
+@media (max-width: 999px) {
+
+  body{
+      overflow-x: hidden;
+  }
+
+  .balcao{
+    background-image: none;
+  }
+
+  .nav-list {
+      position: absolute;
+      top: 8vh;
+      right: 0;
+      width: 50vw;
+      height: 92vh;
+      background: #23232e;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in;
+  }
+
+  .nav-list li {
+      margin-left: 0;
+      opacity: 0;
+  }
+
+  .mobile-menu {
+      display: block;
+  }
+}
+
+.nav-list.active {
+  transform: translateX(0);
+}
+
+@keyframes navLinkFade {
+  from {
+      opacity: 0;
+      transform: translateX(50px);
+  }    
+  to {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
